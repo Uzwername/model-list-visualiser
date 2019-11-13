@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Sample model list visualiser.",
   "private": true,
-  "browserslist": "last 2 versions",
+  "browserslist": "last 1 version, not dead, > 0.2%",
   "scripts": {
     "dev": "cross-env webpack-dev-server --config webpack.dev.js",
     "test": "cross-env npx jest --env=jsdom --watch",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Uzwername/base-react-webpack-config.git"
+    "url": "git+https://github.com/Uzwername/model-list-visualiser.git"
   },
   "keywords": [
     "HTML",
@@ -28,9 +28,9 @@
   "author": "Igor Bykov",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Uzwername/base-react-webpack-config/issues"
+    "url": "https://github.com/Uzwername/model-list-visualiser/issues"
   },
-  "homepage": "https://github.com/Uzwername/base-react-webpack-config#readme",
+  "homepage": "https://github.com/Uzwername/model-list-visualiser#readme",
   "devDependencies": {
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
