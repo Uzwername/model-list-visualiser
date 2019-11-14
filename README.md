@@ -4,7 +4,7 @@ A sample model list visualiser built for [Model Management Frontend Challenge](h
 
 Tools used include:
 + React
-+ React DOM
++ React-Router
 + Webpack
 + Sass
 + and other great npm & not only npm tools & packages
