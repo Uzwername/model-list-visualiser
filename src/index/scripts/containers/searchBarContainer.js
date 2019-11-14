@@ -11,24 +11,10 @@ import { SearchBar } from "IndexComponents/searchBar";
 * RegExp search possibility
 * left enabled intentionally.
 */
-const globalSearcher = query => e => {
-
-	//JSON-encoded string
-	const haystack = JSON.stringify(e, (key, value) => {
-
-		if ( key === `View` ) {
-			return undefined;
-		}
-
-		return value;
-
-	});
-
-	const needle = new RegExp( query, `gui` );
-
-	return needle.test( haystack );
-
-};
+const globalSearcher = query => ({
+	func: e => e.name.includes(query),
+	method: `filter`,
+});
 
 export const SearchBarContainer = props => {
 
@@ -50,11 +36,11 @@ export const SearchBarContainer = props => {
 			*/
 			props.handleSearch(2);
 
-			// Sorts orders according to query
+			// Filters models according to query
 			props.handleShuffle(
 				globalSearcher( searchQuery )
 			);
-
+console.log(searchQuery);
 		}
 
 	};

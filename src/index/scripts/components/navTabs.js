@@ -18,8 +18,8 @@ export const NavTabs = props => {
 					onChange = { props.setActiveTab }
 					aria-label = "View mode switcher"
 				>
-					<Tab label = "All Orders" />
-					<Tab label = "Stage View" />
+					<Tab label = "ASC" />
+					<Tab label = "DESC" />
 				</Tabs>
 			</Paper>
 		) : (

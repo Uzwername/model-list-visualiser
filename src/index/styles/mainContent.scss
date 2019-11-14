@@ -19,22 +19,14 @@
 	display: flex;
 	width: 90%;
 	flex-flow: row wrap;
-	justify-content: space-between;
+	justify-content: center;
 	margin: 20px auto;
 }
 
-.gridBoard {
-	display: grid;
-	grid-template-columns: repeat(6, minmax(200px, 1fr));
-	grid-auto-rows: auto;
-	overflow-y: scroll;
-}
-
 .adaptiveCard {
-	cursor: pointer;
 	position: relative;
 	margin: 2.5%;
-	padding: 5%;
+	padding: 3%;
 	overflow: hidden;
 	flex: 1 1 auto;
 	max-width: 350px;
@@ -46,14 +38,12 @@
 
 }
 
-.dialogWindow {
+:global(.MuiFlatPagination-root) {
+	text-align: center;
+}
 
-	& .dialogTitle {
-		@extend %centeredText;
-	}
-
-	& .prettyJSON {
-		padding: 5%;
-	}
-
+.modelPage {
+	width: 90%;
+	margin: auto;
+	@extend %centeredText;
 }

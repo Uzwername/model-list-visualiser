@@ -1,182 +1,123 @@
 import React, {useState, useEffect} from "react";
-import { OrdersContainer } from "IndexContainers/ordersContainer";
+import { ModelsContainer } from "IndexContainers/modelsContainer";
 import { NavigationContainer } from "IndexContainers/navigationContainer";
-import { OrderCard } from "IndexComponents/orderCard";
-import { OrderDialog } from "IndexComponents/orderDialog";
-import { getOrders } from "./../helpers/getOrders.js";
+import { ModelPageRouter } from "IndexContainers/modelPageContainer";
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route
+} from "react-router-dom";
+import { ascSorting } from "IndexScripts/helpers/sortingFunctions";
 
 export const AppContainer = () => {
 
+	const getModelListConstructor = () => {
+
+		let cache = [];
+
+		return async ( purgeCache = false ) => {
+
+			// Return cache if we have some
+			// and purgeCache is not set to true.
+			if ( cache.length && !purgeCache ) return cache;
+
+			try {
+
+				const res = await fetch(`http://localhost:3000/models`);
+				const modelList = await res.json();
+
+				// Updates cache (copy by reference)
+				cache = modelList;
+
+				return modelList;
+
+			} catch (e) {
+
+				// We might do something
+				// more meaningful here, like
+				// retry or set application
+				// to error mode. For sake of
+				// simplicity, let's just return
+				// an array.
+				return cache;
+
+			}
+
+		};
+
+	};
+
+	// Inner function
+	const getModelList = getModelListConstructor();
+
+	// All models
+	const [modelsList, setModelsList] = useState([]);
+
+	// Default sorting that might be adjusted as needed
+	const [sorting, setSorting] = useState({
+		func: ascSorting,
+		method: `sort`
+	});
+
+	// Should be better for optimization
+	// than inline arrow function.
+	const updateModelList = async (purgeCache = false) => setModelsList( await getModelList(purgeCache) );
+
 	useEffect(() => {
-		/**
-		* Fetches (possibly new) orders
-		* each minute
-		*/
-		const interval = setInterval(
-			() => {
-				setOrders(
-					getOrders()
-				);
-			},
+
+		// Is guaranteed to be called only once on mount.
+		updateModelList();
+
+		// Retrives model list
+		// each minute (in case
+		// new models were added).
+		// We can make it to purge
+		// cache each time if needed.
+		const fetchInterval60Secs = setInterval(
+			updateModelList,
 			60000
 		);
-		return () => clearInterval(interval);
-	}, []);
 
-	// All possible orders
-	const [orders, setOrders] = useState( getOrders() );
+		return () => clearInterval( fetchInterval60Secs );
+
+	},
+	[]);
 
 	/**
 	* Possible modes:
-	* 0: All Orders Tab
+	* 0:
 	* 1: Stage View
 	* 2: Global Search Mode
 	*/
 	const [navMode, setNavMode] = React.useState(0);
 
-	// Modal state (modal is used insted of pages for the sake of easiness)
-	const [orderOpened, setOrderOpened] = React.useState({});
-	const handleOrderClose = () => {
-
-		// Deletes pseudo-id
-		history.replaceState(null, null, ` `);
-
-		setOrderOpened({});
-
-	};
-
-	const openOrderModal = e => {
-
-		const orderData = JSON.parse(
-			e.currentTarget.getAttribute(`data-order`)
-		);
-
-		// Adds pseudo-id to href to make page address differ.
-		window.location.href += `#orderID=${orderData.OrderID}`;
-
-		setOrderOpened( orderData );
-
-	};
-	/**
-	* Constructs object with
-	* all the same data +
-	* its visualisation.
-	*
-	* There is an option to
-	* assign prop directly on
-	* "orders", but this
-	* is not reccomended.
-	*/
-	const allOrders = orders.map(
-
-		e => {
-
-			// Clones e
-			let record = {...e};
-
-			// Adds visaulisation
-			record.View = (
-				<OrderCard
-					key = { e.OrderID }
-					order = { e }
-					handleClick = { openOrderModal }
-				/>
-			);
-
-			return record;
-
-		}
-
-	);
-
-	/**
-	* Returns all necessary
-	* visualisations.
-	*/
-	const [ordersToShow, setOrdersToShow] = useState(
-		allOrders.map( e => e.View )
-	);
-
-	/**
-	* Makes it easy to filter and/or
-	* sort records & update them
-	* with filtered and/or sorted
-	* results.
-	*/
-	const arrangeOrders = (filterFn, sortFn) => {
-
-		/**
-		* If none is function, returns.
-		*/
-		if (
-			typeof sortFn !== `function` &&
-			typeof filterFn !== `function`
-		) return;
-
-		/**
-		* To avoid undefined
-		* errors.
-		*/
-		let filteredOrders;
-		let sortedOrders;
-
-		/**
-		* Filters all orders
-		* if filterFn is present.
-		* Filtering is previous
-		* to sorting in order to
-		* possibly reduce time
-		* complexity.
-		*/
-		if ( filterFn ) {
-
-			filteredOrders = allOrders
-				.filter(
-					filterFn
-				);
-
-		}
-
-		/**
-		* Sorts either previously
-		* filteredOrders or all
-		* orders if filterFn was
-		* not provided.
-		*/
-		if ( sortFn ) {
-
-			sortedOrders = (filteredOrders || allOrders)
-				.sort(
-					sortFn
-				);
-
-		}
-
-		setOrdersToShow(
-			(sortedOrders || filteredOrders).map(
-				e => e.View
-			)
-		);
-
-	};
-
-	return (
+	const SearchPage = () => (
 		<>
 			<NavigationContainer
-				handleShuffle = { arrangeOrders }
+				handleShuffle = { setSorting }
 				navMode = { navMode }
 				setNavMode = { setNavMode }
 			/>
-			<OrdersContainer
-				modality = { navMode }
-			>
-				{ ordersToShow }
-			</OrdersContainer>
-			<OrderDialog
-				order = { orderOpened }
-				handleClose = { handleOrderClose }
+			<ModelsContainer
+				modelsList = { modelsList[sorting.method](sorting.func) }
 			/>
 		</>
+	);
+
+	return (
+		<Router>
+			<Switch>
+				<Route path = "/models">
+					<ModelPageRouter
+						modelsList = { modelsList }
+						handleUpdate = { updateModelList }
+					/>
+				</Route>
+				<Route path = "/">
+					<SearchPage />
+				</Route>
+			</Switch>
+		</Router>
 	);
 
 };

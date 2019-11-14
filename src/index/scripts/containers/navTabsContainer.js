@@ -1,13 +1,29 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { NavTabs } from "IndexComponents/navTabs";
+import {ascSorting, descSorting} from "IndexScripts/helpers/sortingFunctions";
 
 export const NavTabsContainer = props => {
 
 	const deactivated = (props.navMode > 1);
 
-	const handleTabChange = (event, newActiveTab) =>
+	const handleTabChange = (event, newActiveTab) => {
+
 		props.handleNavModeChange(newActiveTab);
+
+		if (newActiveTab === 0) {
+			// ASC
+			props.handleShuffle(
+				{ func: ascSorting, method: `sort` }
+			);
+		} else if (newActiveTab === 1) {
+			//DESC
+			props.handleShuffle(
+				{ func: descSorting, method: `sort` }
+			);
+		}
+
+	};
 
 	const handleNavModeRestore = () => {
 
@@ -15,9 +31,9 @@ export const NavTabsContainer = props => {
 		props.handleNavModeChange(0);
 
 		// Restores all cards
-		props.handleShuffle(
-			() => true
-		);
+		props.handleShuffle({
+			func: ascSorting, method: `sort`
+		});
 
 	};
 

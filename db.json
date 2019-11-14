@@ -1,13 +1,12 @@
 {
-  "models":
-  [
+  "models": [
     {
       "id": "5dcc22a82b72d6f44cc217c0",
       "is_moderated": true,
       "avatar": "https://placeimg.com/200/280/people",
       "age": 38,
       "eyes": "green",
-      "name": "Jocelyn Miller",
+      "name": "Igor Bykov",
       "gender": "female",
       "email": "jocelynmiller@snowpoke.com",
       "created_at": "2017-08-16 06:08:23 ",
@@ -27,7 +26,7 @@
       "avatar": "https://placeimg.com/200/280/people",
       "age": 36,
       "eyes": "brown",
-      "name": "Lori Obrien",
+      "name": "Lori Obi-van Kenobi",
       "gender": "female",
       "email": "loriobrien@snowpoke.com",
       "created_at": "2014-04-15 01:37:59 ",
@@ -147,7 +146,7 @@
       "avatar": "https://placeimg.com/200/280/people",
       "age": 22,
       "eyes": "green",
-      "name": "Wise Farmer",
+      "name": "Wise FOumer",
       "gender": "male",
       "email": "wisefarmer@snowpoke.com",
       "created_at": "2014-08-16 06:28:16 ",
@@ -587,7 +586,7 @@
       "avatar": "https://placeimg.com/200/280/people",
       "age": 39,
       "eyes": "brown",
-      "name": "Abby Rodgers",
+      "name": "Ruby Rodgers",
       "gender": "female",
       "email": "abbyrodgers@snowpoke.com",
       "created_at": "2017-10-02 06:10:47 ",

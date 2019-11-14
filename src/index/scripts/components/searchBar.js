@@ -9,7 +9,7 @@ export const SearchBar = props => (
 	<TextField
 		id = "searchBar"
 		label = "Search"
-		placeholder = "Shipped"
+		placeholder = "Alyce"
 		fullWidth
 		value = { props.searchBarTextValue }
 		onChange = { props.handleChange }
