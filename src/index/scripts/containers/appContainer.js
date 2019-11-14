@@ -85,8 +85,8 @@ export const AppContainer = () => {
 
 	/**
 	* Possible modes:
-	* 0:
-	* 1: Stage View
+	* 0: ASC
+	* 1: DESC
 	* 2: Global Search Mode
 	*/
 	const [navMode, setNavMode] = React.useState(0);
