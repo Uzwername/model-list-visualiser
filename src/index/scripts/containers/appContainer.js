@@ -23,7 +23,7 @@ export const AppContainer = () => {
 
 			const res = await fetch(`http://localhost:3000/models`);
 			const modelList = await res.json();
-			// Updates cache (copy by reference)
+			// Updates cache
 			setCache(modelList);
 
 			return modelList;
