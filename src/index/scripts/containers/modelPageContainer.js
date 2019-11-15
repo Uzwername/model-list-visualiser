@@ -78,7 +78,7 @@ const ModelPageContainer = props => {
 		);
 
 		// Forces update.
-		props.handleUpdate();
+		props.handleUpdate( true );
 
 	};
 
