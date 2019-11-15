@@ -11,44 +11,36 @@ import { ascSorting } from "IndexScripts/helpers/sortingFunctions";
 
 export const AppContainer = () => {
 
-	const getModelListConstructor = () => {
+	const [cache, setCache] = useState([]);
 
-		let cache = [];
+	const getModelList = async ( purgeCache = false ) => {
 
-		return async ( purgeCache = false ) => {
+		// Return cache if we have some
+		// and purgeCache is not set to true.
+		if ( cache.length && !purgeCache ) return cache;
 
-			// Return cache if we have some
-			// and purgeCache is not set to true.
-			if ( cache.length && !purgeCache ) return cache;
+		try {
 
-			try {
+			const res = await fetch(`http://localhost:3000/models`);
+			const modelList = await res.json();
+			// Updates cache (copy by reference)
+			setCache(modelList);
 
-				const res = await fetch(`http://localhost:3000/models`);
-				const modelList = await res.json();
+			return modelList;
 
-				// Updates cache (copy by reference)
-				cache = modelList;
+		} catch (e) {
 
-				return modelList;
+			// We might do something
+			// more meaningful here, like
+			// retry or set application
+			// to error mode. For sake of
+			// simplicity, let's just return
+			// an array.
+			return cache;
 
-			} catch (e) {
-
-				// We might do something
-				// more meaningful here, like
-				// retry or set application
-				// to error mode. For sake of
-				// simplicity, let's just return
-				// an array.
-				return cache;
-
-			}
-
-		};
+		}
 
 	};
-
-	// Inner function
-	const getModelList = getModelListConstructor();
 
 	// All models
 	const [modelsList, setModelsList] = useState([]);
